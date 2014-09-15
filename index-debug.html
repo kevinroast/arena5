@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+      <title>Arena5 - HTML5 Canvas JavaScript Game - DEBUG</title>
+      <link rel="stylesheet" href="reset.css" />
+      <link rel="SHORTCUT ICON" href="arena5icon.ico"/>
+      <script src="scripts/mathlib-min.js"></script>
+      <script src="scripts/k3d-min.js"></script>
+      <script src="scripts/gamelib.js"></script>
+      <script src="scripts/arena_main.js"></script>
+      <script src="scripts/arena_prerender.js"></script>
+      <script src="scripts/arena_3d.js"></script>
+      <script src="scripts/arena_player.js"></script>
+      <script src="scripts/arena_weapons.js"></script>
+      <script src="scripts/arena_enemies.js"></script>
+      <script src="scripts/arena_effects.js"></script>
+      <script>
+DEBUG =
+{
+   INVINCIBLE: false,
+   COLLISIONRADIUS: false,
+   DISABLEGLOWEFFECT: false,
+   DISABLEAUTOFIRE: false,
+   FPS: false,
+   RENDERINGINFO: false
+};
+      </script>
+      <style type="text/css">
+body
+{
+   font-family: Segoe UI Light, Arial, Helvetica;
+   background-color: #000;
+   background-image: url(images/arena5_bg2.jpg);
+   background-repeat: no-repeat;
+   margin: 0;
+}
+
+a, a:visited, a:active, a:hover { color: #fff }
+
+.wrapper
+{
+   margin-top: 16px;
+   text-align: center;
+   white-space: nowrap;
+}
+
+canvas
+{
+   background-color: #000;
+   cursor: crosshair;
+   -moz-box-shadow: 0px 0px 6px #000;
+   -webkit-box-shadow: 0px 0px 6px #000;
+   box-shadow: 0px 0px 6px #000;
+}
+
+.infopanel
+{
+   text-align: left;
+   display: inline-block;
+   max-width: 20em;
+   white-space: normal;
+   vertical-align: top;
+   margin-left: 1.5em;
+   background-color: #444488;
+   color: #fff;
+   line-height: 1.5em;
+   padding: 0.5em;
+   margin-top: 2em;
+   -moz-box-shadow: 0px 0px 6px #222266;
+   -webkit-box-shadow: 0px 0px 6px #222266;
+   box-shadow: 0px 0px 6px #222266;
+}
+
+.settings
+{
+   padding-left: 0.5em;
+}
+
+.note
+{
+   color: yellow;
+}
+
+.small
+{
+   padding-left: 1em;
+   font-size: 0.75em;
+   line-height: 1.2em;
+}
+      </style>
+   </head>
+   
+   <body>
+      <div class="wrapper">
+         <canvas id="canvas" width="600" height="600"></canvas>
+         <div class="infopanel">
+            <div><b>DEBUG SETTINGS</b></div>
+            <div class="settings">
+               <input type="checkbox" id="debug-FPS" />
+               <label for="debug-FPS">FPS and TimePerFrame</label>
+               <br/>
+               <input type="checkbox" id="debug-COLLISIONRADIUS" />
+               <label for="debug-COLLISIONRADIUS">Collision Radius</label>
+               <br/>
+               <input type="checkbox" id="debug-INVINCIBLE" />
+               <label for="debug-INVINCIBLE">Invincible</label>
+               <br/>
+               <input type="checkbox" id="debug-DISABLEGLOWEFFECT" />
+               <label for="debug-DISABLEGLOWEFFECT">Disable Glow Effect</label>
+               <br/>
+               <input type="checkbox" id="debug-DISABLEAUTOFIRE" />
+               <label for="debug-DISABLEAUTOFIRE">Disable Auto-fire</label>
+               <br/>
+               <input type="checkbox" id="debug-RENDERINGINFO" />
+               <label for="debug-RENDERINGINFO">Rendering Info</label>
+               <br/>
+               <input type="checkbox" id="debug-K3DREALTIME" />
+               <label for="debug-K3DREALTIME">K3D Realtime Rendering</label>
+            </div>
+            <div><b>KEYS</b></div>
+            <div class="settings">
+               <p>WASD or Arrow keys - move your ship</p>
+               <p>L - Skip to next level</p>
+               <p>T - Toggle sound (Chrome/FireFox only)</p>
+               <p>[ ] - Zoom in/out world</p>
+               <p>ESC - Pause game</p>
+            </div>
+         </div>
+      </div>
+   </body>
+   <script>
+      var ua=navigator.userAgent.toLowerCase();
+      if (ua.indexOf(" mac ") != -1)
+      {
+         document.getElementById('canvas').style.cursor = "move";
+      }
+   </script>
+</html>

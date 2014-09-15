@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+      <title>Arena5 - HTML5 Canvas JavaScript Game!</title>
+      <link rel="stylesheet" href="reset.css" />
+      <link rel="SHORTCUT ICON" href="arena5icon.ico"/>
+      <script src="scripts/mathlib-min.js"></script>
+      <script src="scripts/k3d-min.js"></script>
+      <script src="scripts/gamelib.js"></script>
+      <script src="scripts/arena_main.js"></script>
+      <script src="scripts/arena_prerender.js"></script>
+      <script src="scripts/arena_3d.js"></script>
+      <script src="scripts/arena_player.js"></script>
+      <script src="scripts/arena_weapons.js"></script>
+      <script src="scripts/arena_enemies.js"></script>
+      <script src="scripts/arena_effects.js"></script>
+      <script async defer src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+      <script async defer src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e4813104686cad8"></script>
+      <style type="text/css">
+body
+{
+   font-family: Segoe UI Light, Arial, Helvetica;
+   background-color: #000;
+   background-image: url(images/arena5_bg2.jpg);
+   background-repeat: no-repeat;
+   margin: 0;
+}
+a, a:visited, a:active, a:hover { color: #fff }
+
+.wrapper
+{
+   margin-top: 16px;
+   text-align: center;
+   white-space: nowrap;
+}
+
+canvas
+{
+   background-color: #000;
+   cursor: crosshair;
+   -moz-box-shadow: 0px 0px 6px #000;
+   -webkit-box-shadow: 0px 0px 6px #000;
+   box-shadow: 0px 0px 6px #000;
+}
+
+.info
+{
+   display: inline-block;
+   vertical-align: top;
+   margin-left: 1.5em;
+}
+
+.infopanel
+{
+   text-align: left;
+   max-width: 20em;
+   white-space: normal;
+   background-color: #444488;
+   color: #fff;
+   line-height: 1.5em;
+   padding: 0.5em;
+   margin-top: 4.5em;
+   -moz-box-shadow: 0px 0px 6px #222266;
+   -webkit-box-shadow: 0px 0px 6px #222266;
+   box-shadow: 0px 0px 6px #222266;
+}
+
+.settings
+{
+   padding-left: 0.5em;
+}
+
+.button-overlay
+{
+   position: absolute;
+   right: 1em;
+}
+
+.note
+{
+   color: yellow;
+}
+
+.small
+{
+   padding-left: 1em;
+   font-size: 0.75em;
+   line-height: 1.333em;
+}
+
+.section
+{
+   padding-top: 0.75em;
+}
+
+.results
+{
+   color: white
+}
+
+.results-wrapper
+{
+   display: none;
+   font-size: 1.0em;
+   border: 2px solid grey;
+   background-color: #333333;
+   padding: 0.5em;
+   margin-top: 1em;
+   line-height: 1.25em;
+}
+
+.toggle-area
+{
+   display: none;
+}
+
+.toggler
+{
+   text-decoration: none;
+}
+      </style>
+   </head>
+   
+   <body>
+      <div class="wrapper">
+         <div class="button-overlay">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <a class="addthis_button_preferred_1"></a>
+            <a class="addthis_button_preferred_2"></a>
+            <a class="addthis_button_compact"></a>
+            <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
+            <!-- AddThis Button END -->
+         </div>
+         <canvas id="canvas" width="600" height="600"></canvas>
+         <div class="info">
+            <div class="infopanel">
+               <div><b>ARENA5 - HTML5 game by Kevin Roast</b></div>
+               <div class="settings">
+                  <p class="section">WASD or Arrow keys - move your ship</p>
+                  <p>Use the mouse to aim your fire!</p>
+                  <p>Pickup the score multipliers dropped by the enemy ships - higher score means weapon power ups!</p>
+                  <p class="section"><a href="../index.html">More HTML5 awesomeness.</a></p>
+                  <p><a href="arena5-src.zip">Download the JavaScript source code</a></p>
+                  <p><a href="./index-debug.html">Game DEBUG panel</a></p>
+                  <p class="note section">Last updated: 14th September 2014</p>
+                  <p class="note small">Sound effects (Chrome/Firefox only) - toggle with 'T' key.</p>
+                  <p class="note small">Chrome/FireFox Gamepad API support <a class="toggler" href="#" onclick="$('#toggle-1').toggle();">[+]</a>
+                     <span id="toggle-1" class="toggle-area"><br>
+                     1. Plug in XBox360/PS3 USB Gamepad.<br>
+                     2. Refresh Arena5 page - press 'A'/'X' button on pad to start.<br>
+                     3. Use the analogue sticks to move and fire.<br>
+                     </span>
+                  </p>
+               </div>
+               <div class="section"><b>OTHER KEYS</b></div>
+               <div class="settings">
+                  <p>T - Toggle sound (Chrome/FireFox only)</p>
+                  <p>[ ] - Zoom in/out world</p>
+                  <p>ESC - Pause game</p>
+                  <p class="section" style="font-size: 0.75em">Contact me by email: kevtoast at yahoo.com</p>
+                  <p style="font-size: 0.75em">Twitter: <a href="http://twitter.com/kevinroast" target="new">@kevinroast</a></p>
+               </div>
+            </div>
+            <div id="results-wrapper" class="results-wrapper">
+               <div class="results" id="results"></div>
+               <div class="results"><p><a id="tweetlink" href="#" target="new">Tweet your score!</a></p></div>
+            </div>
+         </div>
+      </div>
+   </body>
+   <script>
+      var ua=navigator.userAgent.toLowerCase();
+      if (ua.indexOf(" mac ") != -1)
+      {
+         document.getElementById('canvas').style.cursor = "move";
+      }
+   </script>
+</html>
