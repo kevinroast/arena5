@@ -3,6 +3,8 @@ Arena5
 
 Arena5 HTML5 Canvas JavaScript game - twin stick shooter in the style of 'geometry wars'.
 
+Play here: http://www.kevs3d.co.uk/dev/arena5
+
 Game uses the Canvas, Audio and GamePad HTML5 APIs.
 
 You can plugin in a USB XBox360 controller (or PS3) or use the mouse and keyboard.
