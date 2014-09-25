@@ -93,6 +93,7 @@ var GameHandler =
     * Gamepad API support
     */
    gamepad: null,
+   gamepadButtons: {},
    
    /**
     * Audio API support
@@ -348,22 +349,6 @@ Game.worldToScreen = function worldToScreen(vector, world, radiusx, radiusy)
             }
          }
       };
-      
-      // GamePad button support
-      var buttonPressed = function buttonPressed(e, pressed)
-      {
-         if (me.sceneIndex !== -1)
-         {
-            if (pressed)
-            {
-               me.scenes[me.sceneIndex].onKeyDownHandler(GameHandler.GAMEPAD + e.button);
-            }
-            else
-            {
-               me.scenes[me.sceneIndex].onKeyUpHandler(GameHandler.GAMEPAD + e.button);
-            }
-         }
-      };
    };
    
    Game.Main.prototype =
@@ -384,7 +369,7 @@ Game.worldToScreen = function worldToScreen(vector, world, radiusx, radiusy)
          
          GameHandler.resizeHandler();
          
-         // Webkit Gamepad support - does not support events - probe manually for values
+         // Gamepad support - does not support events - probe manually for values
          if (GameHandler.gamepad && this.sceneIndex !== -1)
          {
             for (var i=0,pad; i<navigator.getGamepads().length; i++)
@@ -393,11 +378,18 @@ Game.worldToScreen = function worldToScreen(vector, world, radiusx, radiusy)
                {
                   for (var b=0; b<pad.buttons.length; b++)
                   {
-                     // TODO: deal with button up/down values to ensure orthogonal button press events!
                      if (pad.buttons[b].pressed)
                      {
-                        //console.log(b + " := " + pad.buttons[b]);
+                        //console.log(b + " := " + pad.buttons[b].pressed);
+                        GameHandler.gamepadButtons[b] = true;
                         this.scenes[this.sceneIndex].onKeyDownHandler(GameHandler.GAMEPAD + b);
+                     }
+                     // deal with button up to ensure orthogonal button press events
+                     else if (GameHandler.gamepadButtons[b])
+                     {
+                        //console.log(b + " := " + pad.buttons[b].pressed);
+                        GameHandler.gamepadButtons[b] = false;
+                        this.scenes[this.sceneIndex].onKeyUpHandler(GameHandler.GAMEPAD + b);
                      }
                   }
                   for (var a=0; a<pad.axes.length; a++)
